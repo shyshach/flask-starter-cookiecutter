@@ -1,0 +1,19 @@
+FROM python:3.9
+
+RUN mkdir -p /app
+WORKDIR /app
+
+# Copy files
+COPY ./requirements.txt ./
+COPY ./setup.py ./
+
+# Copy folders
+ADD ./src ./src
+
+# Install packages
+RUN pip install -U pip && pip install -r requirements.txt
+
+# Run flask app
+EXPOSE {{ cookiecutter.flask_port }}
+ENV FLASK_APP="src/main.py" FLASK_DEBUG=1 FLASK_ENV=docker
+CMD ["flask", "run", "-h", "{{ cookiecutter.flask_host }}", "-p", "{{ cookiecutter.flask_port }}"]

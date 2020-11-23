@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:12
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - ./data/postgres/data:/var/lib/postgresql/data
+
+    networks:
+      - local
+  app:
+    build: .
+    restart: on-failure
+    env_file:
+      - ./.env
+    volumes:
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+    ports:
+      - "{{cookiecutter.flask_host}}:{{ cookiecutter.flask_port }}:{{ cookiecutter.flask_port }}"
+    depends_on: 
+      - db
+    networks:
+      - local
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "{{cookiecutter.adminer_host}}:{{ cookiecutter.adminer_port }}:{{ cookiecutter.adminer_port }}"
+    depends_on:
+      - db
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
