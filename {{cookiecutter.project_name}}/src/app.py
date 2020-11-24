@@ -1,3 +1,4 @@
+import click
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import get_config
@@ -31,4 +32,9 @@ def create_app(env=None):
     app.config.from_object(get_config(env))
     db.init_app(app)
     setup_jwt(app)
+
+    @app.cli.command("create-sequence")
+    @click.argument("name")
+    def create_sequence(name):
+        db.engine.execute(f"CREATE SEQUENCE {name}")
     return app
