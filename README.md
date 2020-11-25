@@ -7,8 +7,6 @@ Use docker-compose
 ```
 docker-compose up
 ```
-## Go to adminer page
-Create there a sequence autoid
 
 ## Run migrations
 
