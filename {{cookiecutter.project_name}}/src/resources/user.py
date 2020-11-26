@@ -25,8 +25,9 @@ class UserList(Resource):
         request_json = request.get_json(silent=True)
         username: str = request_json.get('username')
         avatar_url: str = request_json.get('avatar_url', '')
+        password: str = request_json.get('password')
         try:
-            user = UserRepository.create(username, avatar_url)
+            user = UserRepository.create(username, avatar_url, password)
             return user, 200
         except Exception as e:
             response = jsonify(e.to_dict())
