@@ -8,7 +8,7 @@ Install fabric3 from console:
 
 from fabric.api import local, task
 
-DC = "sudo docker-compose -f docker-compose.yml"
+DC = "docker-compose -f docker-compose.yml"
 
 
 @task
@@ -36,8 +36,16 @@ def logs():
 
 
 @task
-def migrate():
-    """Add migrations and update db."""
+def init_db():
+    """Db initialiation."""
     local(
-        f"{DC} exec app /bin/bash ./scripts/run_migrations.sh"
+        f"{DC} exec app /bin/bash ./scripts/db_init.sh"
+    )
+
+
+@task
+def migrate():
+    """Db migration."""
+    local(
+        f"{DC} exec app /bin/bash ./scripts/migrate.sh"
     )

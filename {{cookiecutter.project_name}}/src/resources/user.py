@@ -9,7 +9,7 @@ from flask_jwt_extended import (
     get_raw_jwt,
 )
 from repositories import UserRepository
-from models.revoked_token_model import RevokedTokenModel
+from models.revoked_token import RevokedToken
 from sqlalchemy.exc import IntegrityError
 
 
@@ -33,6 +33,7 @@ class UserList(Resource):
             response = jsonify(e.to_dict())
             response.status_code = e.status_code
             return response
+
     def get(self):
         """ Get users list."""
         users_query = UserRepository.all()
@@ -79,7 +80,7 @@ class UserLogoutAccess(Resource):
     def post(self):
         jti = get_raw_jwt()["jti"]
         try:
-            revoked_token = RevokedTokenModel(jti=jti)
+            revoked_token = RevokedToken(jti=jti, username=get_jwt_identity())
             revoked_token.add()
             return {"message": "Access token has been revoked"}, 200
         except IntegrityError:
@@ -91,7 +92,7 @@ class UserLogoutRefresh(Resource):
     def post(self):
         jti = get_raw_jwt()["jti"]  # id of a jwt accessing this post method
         try:
-            revoked_token = RevokedTokenModel(jti=jti)
+            revoked_token = RevokedToken(jti=jti, username=get_jwt_identity())
             revoked_token.add()
             return {"message": "Refresh token has been revoked"}, 200
         except IntegrityError:

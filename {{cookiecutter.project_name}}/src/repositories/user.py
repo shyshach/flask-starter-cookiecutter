@@ -1,7 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 from exceptions import ResourceExists
 from models import User
-from flask_jwt_extended import create_access_token, create_refresh_token
 from passlib.hash import pbkdf2_sha256 as sha256
 
 
