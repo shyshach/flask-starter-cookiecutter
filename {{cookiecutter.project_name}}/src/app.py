@@ -10,10 +10,8 @@ db = SQLAlchemy()
 
 
 def setup_jwt(app):
-    if os.environ.get("JWT_SECRET_KEY"):
-        app.config["JWT_SECRET_KEY"] = os.environ.get("JWT_SECRET_KEY")
-    else:
-        app.config["JWT_SECRET_KEY"] = "jwt-secret-key"
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "jwt-secret-key")"
+
     jwt = JWTManager(app)
 
     app.config["JWT_BLACKLIST_ENABLED"] = True
@@ -32,9 +30,4 @@ def create_app(env=None):
     app.config.from_object(get_config(env))
     db.init_app(app)
     setup_jwt(app)
-
-    @app.cli.command("create-sequence")
-    @click.argument("name")
-    def create_sequence(name):
-        db.engine.execute(f"CREATE SEQUENCE {name}")
     return app
