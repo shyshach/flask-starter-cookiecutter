@@ -10,7 +10,7 @@ db = SQLAlchemy()
 
 
 def setup_jwt(app):
-    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "jwt-secret-key")"
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "jwt-secret-key")
 
     jwt = JWTManager(app)
 
