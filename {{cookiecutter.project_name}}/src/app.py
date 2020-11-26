@@ -16,12 +16,12 @@ def setup_jwt(app):
     app.config["JWT_BLACKLIST_ENABLED"] = True
     app.config["JWT_BLACKLIST_TOKEN_CHECKS"] = ["access", "refresh"]
 
-    from models.revoked_token_model import RevokedTokenModel
+    from models.revoked_token import RevokedToken
 
     @jwt.token_in_blacklist_loader
     def check_if_token_in_blacklist(decrypted_token):
         jti = decrypted_token["jti"]
-        return RevokedTokenModel.is_jti_blacklisted(jti)
+        return RevokedToken.is_jti_blacklisted(jti)
 
 
 def create_app(env=None):
