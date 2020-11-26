@@ -1,4 +1,3 @@
-import click
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import get_config

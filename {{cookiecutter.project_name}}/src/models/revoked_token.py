@@ -2,13 +2,11 @@ from . import db
 import datetime
 from sqlalchemy.exc import IntegrityError
 
-TABLE_ID = db.Sequence("autoid", start=1)
 
-
-class RevokedTokenModel(db.Model):
+class RevokedToken(db.Model):
     __tablename__ = "revoked_tokens"
-
     id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120), db.ForeignKey('user.username'), nullable=False)
     jti = db.Column(db.String(120))
     blacklisted_on = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 

@@ -1,13 +1,13 @@
 {
-  "project_name": "test1",
+  "project_name": "test_project",
   "flask_host": "0.0.0.0",
   "flask_port": "5050",
   "adminer_host": "127.0.0.1",
   "adminer_port": "8080",
   "db_url": "db:5432",
   "db_name": "mydb",
-  "db_username": "rostyk",
-  "db_password": "qazwsx123",
+  "db_username": "flask_user",
+  "db_password": "123456789",
   "ENV": "development",
   "jwt_key": "jwt-secret-key"
 }
