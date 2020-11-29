@@ -7,6 +7,7 @@ from resources import (
     UserLogoutAccess,
     UserLogoutRefresh,
     TokenRefresh,
+    PasswordChange
 )
 from models import User as UserModel, db
 from flask_migrate import Migrate
@@ -19,6 +20,7 @@ migrate = Migrate(app, db)
 
 # API
 api = Api(app)
+api.add_resource(PasswordChange, "/api/change_password")
 api.add_resource(HealthCheck, "/healthcheck")
 api.add_resource(User, "/api/users/<username>")
 api.add_resource(UserList, "/api/users/")
@@ -26,7 +28,6 @@ api.add_resource(UserLogin, "/api/login")
 api.add_resource(UserLogoutAccess, "/api/logout_access")
 api.add_resource(UserLogoutRefresh, "/api/logout_refresh")
 api.add_resource(TokenRefresh, "/api/refresh")
-
 
 # CLI for migrations
 @app.shell_context_processor
