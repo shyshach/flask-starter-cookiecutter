@@ -6,6 +6,7 @@ from .user import (
     UserLogoutAccess,
     UserLogoutRefresh,
     TokenRefresh,
+    PasswordChange,
 )
 
 
@@ -17,4 +18,5 @@ __all__ = [
     "UserLogoutAccess",
     "UserLogoutRefresh",
     "TokenRefresh",
+    "PasswordChange"
 ]

@@ -18,6 +18,41 @@ class User(Resource):
         user = UserRepository.get(username)
         return user, 200
 
+    def put(self, username: str):
+        request_json = request.get_json(silent=True)
+        avatar_url: str = request_json.get('avatar_url', '')
+        user = UserRepository.update_avatar(username, avatar_url)
+        return user, 200
+
+    def delete(self, username: str):
+        user = UserRepository.delete(username)
+        return user, 200
+
+
+class PasswordChange(Resource):
+    @jwt_required
+    def put(self):
+        request_json = request.get_json(silent=True)
+        username = get_jwt_identity()
+        old_password: str = request_json.get('old_password')
+        new_password: str = request_json.get('new_password')
+        confirm_password: str = request_json.get('confirmation_password')
+        current_user = UserRepository.get(username)
+        if not UserRepository.verify_hash(old_password, current_user["password"]):
+            return {
+                "message": "Bad old password"
+            }, 400
+        if new_password != confirm_password:
+            return {
+                "message": "New password doesn't match with confirmation password."
+            }, 400
+        if not new_password:
+            return {
+                       "message": "New password is empty. Update didn't pass"
+                   }, 400
+        user = UserRepository.update_password(username, new_password)
+        return user, 200
+
 
 class UserList(Resource):
     def post(self):
@@ -26,6 +61,7 @@ class UserList(Resource):
         username: str = request_json.get('username')
         avatar_url: str = request_json.get('avatar_url', '')
         password: str = request_json.get('password')
+        active = True
         try:
             user = UserRepository.create(username, avatar_url, password)
             return user, 200
@@ -45,6 +81,7 @@ class UserList(Resource):
                         "username": user.username,
                         "avatar": user.avatar_url,
                         "created": str(user.date_created),
+                        "active": user.active
                     }
                 )
         else:
@@ -55,7 +92,7 @@ class UserList(Resource):
 class UserLogin(Resource):
     def post(self):
         request_json = request.get_json(silent=True)
-        username: str = request_json["username"]
+        username: str = request_json.get("username")
         password: str = request_json.get("password")
         # lookup by username
         if UserRepository.get(username):
