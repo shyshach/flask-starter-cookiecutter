@@ -10,7 +10,7 @@
 [Cookiecutter docs](https://cookiecutter.readthedocs.io/en/latest/)
 ```
 pip install --user cookiecutter
-cookiecutter https://github.com/ssyuzev/flask-rest-api
+cookiecutter https://github.com/shyshach/flask-starter-cookiecutter
 ```
 
 
