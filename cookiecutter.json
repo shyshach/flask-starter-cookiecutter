@@ -12,6 +12,7 @@
   "jwt_key": "jwt-secret-key",
   "_copy_without_render": [
         "*.html",
-        "*templates"
+        "*templates",
+        "*static"
     ]
 }
