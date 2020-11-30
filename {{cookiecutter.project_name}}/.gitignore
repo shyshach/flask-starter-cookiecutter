@@ -8,3 +8,5 @@ venv/
 
 *.iws
 *.env
+
+.DS_Store
