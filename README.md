@@ -1,4 +1,17 @@
-# {{cookiecutter.project_name}}
+# Flask starter project with cookiecutter
+
+## Requirements
+- Docker & Docker-compose
+- Python3, cookiecutter
+- Fabric3 (optional)
+
+
+## Use cookiecutter to make a new project from this template
+[Cookiecutter docs](https://cookiecutter.readthedocs.io/en/latest/)
+```
+pip install --user cookiecutter
+cookiecutter https://github.com/ssyuzev/flask-rest-api
+```
 
 
 ## Run locally with docker
