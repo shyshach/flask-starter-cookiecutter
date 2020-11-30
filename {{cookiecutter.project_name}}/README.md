@@ -12,7 +12,7 @@ docker-compose up
 
 ## Initialise environment variables. 
 
-Save `.env.example`  as a `.env` file.
+Check if `.env` file exists. Otherwise save `.env.sample` as a `.env` file and change the values.
 Example content:
 
 ```
