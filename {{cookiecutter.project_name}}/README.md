@@ -5,6 +5,7 @@
 
 Use docker-compose
 ```
+docker-compose build
 docker-compose up
 ```
 
@@ -26,12 +27,6 @@ export JWT_SECRET_KEY="super-secret"
 ## Run migrations
 
 ```
-fab migrate
+fab init_db
 ```
 
-
-## Run with gunicorn
-For production.
-```
-cd src && gunicorn main:app
-```
