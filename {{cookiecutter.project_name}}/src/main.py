@@ -35,7 +35,7 @@ api.add_resource(TokenRefresh, "/api/refresh")
 # Custom openapi docs route
 @app.route('/api/docs/')
 def openapi():
-    """Return Swagger UI for custom openapi.json in static/openapi.json."""
+    """Return Swagger UI for custom openapi.yaml in static/openapi.yaml."""
     return render_template('swagger.html')
 
 
