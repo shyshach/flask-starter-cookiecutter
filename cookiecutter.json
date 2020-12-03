@@ -9,5 +9,10 @@
   "db_username": "flask_user",
   "db_password": "123456789",
   "ENV": "development",
-  "jwt_key": "jwt-secret-key"
+  "jwt_key": "jwt-secret-key",
+  "_copy_without_render": [
+        "*.html",
+        "*templates",
+        "*static"
+    ]
 }
