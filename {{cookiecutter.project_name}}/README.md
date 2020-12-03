@@ -5,13 +5,14 @@
 
 Use docker-compose
 ```
+docker-compose build
 docker-compose up
 ```
 
 
-## Initialise environment variables. 
+## Initialise environment variables
 
-Save `.env.example`  as a `.env` file.
+Check if `.env` file exists. Otherwise save `.env.sample` as a `.env` file and change the values.
 Example content:
 
 ```
@@ -23,15 +24,14 @@ export POSTGRES_PASSWORD="example"
 export JWT_SECRET_KEY="super-secret"
 ```
 
+
 ## Run migrations
 
 ```
-fab migrate
+fab init_db
 ```
 
 
-## Run with gunicorn
-For production.
-```
-cd src && gunicorn main:app
-```
+## Openapi docs
+
+Go to: http://{{cookiecutter.flask_host}}:{{ cookiecutter.flask_port }}/api/docs/

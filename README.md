@@ -18,6 +18,7 @@ cookiecutter https://github.com/shyshach/flask-starter-cookiecutter
 
 Use docker-compose
 ```
+docker-compose build
 docker-compose up
 ```
 
