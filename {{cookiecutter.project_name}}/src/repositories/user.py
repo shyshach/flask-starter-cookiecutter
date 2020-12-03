@@ -60,7 +60,7 @@ class UserRepository:
         """ Delete user """
         result: dict = {}
         try:
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(username=username).first_or_404()
             if user:
                 user.active = False
                 user.save()
@@ -84,7 +84,7 @@ class UserRepository:
         """ Update user password """
         result: dict = {}
         try:
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(username=username).first_or_404()
             if user:
                 user.password = UserRepository.generate_hash(password)
                 user.save()

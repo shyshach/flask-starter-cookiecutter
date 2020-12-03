@@ -1,5 +1,7 @@
 from flask import request
+import  datetime
 from flask_restful import Resource
+from exceptions import ResourceExists
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -20,6 +22,8 @@ class User(Resource):
 
     def put(self, username: str):
         request_json = request.get_json(silent=True)
+        if not request_json:
+            return {"message": "Request body is empty."}, 400
         avatar_url: str = request_json.get('avatar_url', '')
         if avatar_url == '':
             return {"message": "New avatar url is empty"}, 400
@@ -27,8 +31,13 @@ class User(Resource):
         return user, 200
 
     def delete(self, username: str):
-        user = UserRepository.delete(username)
-        return user, 200
+        try:
+            response = UserRepository.delete(username)
+        except ResourceExists:
+            return {"message": "Something went wrong"}, 500
+        except Exception:
+            return {"message": "User not found"}, 404
+        return response, 200
 
 
 class PasswordChange(Resource):
@@ -36,9 +45,15 @@ class PasswordChange(Resource):
     def put(self):
         request_json = request.get_json(silent=True)
         username = get_jwt_identity()
+        if not request_json:
+            return {"message": "Body should not be empty"}, 400
         old_password: str = request_json.get('old_password')
         new_password: str = request_json.get('new_password')
         confirm_password: str = request_json.get('confirmation_password')
+        if not old_password or not new_password or not confirm_password:
+            return {
+                       "message": "Something missing in body"
+                   }, 400
         current_user = UserRepository.get(username)
         if not UserRepository.verify_hash(old_password, current_user.get("password")):
             return {
@@ -66,8 +81,10 @@ class UserList(Resource):
         try:
             user = UserRepository.create(username, avatar_url, password)
             return user, 200
-        except Exception as e:
-            response = {"message": str(e)}, 400
+        except ResourceExists:
+            response = {"message": "user already exists."}, 400
+        except Exception as ex:
+            response = {"message": str(ex)}, 500
         return response
 
     def get(self):
@@ -95,6 +112,10 @@ class UserLogin(Resource):
         username: str = request_json.get("username")
         password: str = request_json.get("password")
         # lookup by username
+        if not username:
+            return {"message": "Bad username"}, 400
+        if not password:
+            return {"message": "Bad password"}, 400
         if UserRepository.get(username):
             current_user = UserRepository.get(username)
         else:
@@ -102,7 +123,7 @@ class UserLogin(Resource):
 
         if UserRepository.verify_hash(password, current_user.get("password")):
             access_token = create_access_token(identity=username)
-            refresh_token = create_refresh_token(identity=username)
+            refresh_token = create_refresh_token(identity=username, expires_delta=datetime.timedelta(seconds=1))
             return {
                 "message": "Logged in as {}".format(current_user.get("username")),
                 "access_token": access_token,
@@ -138,7 +159,7 @@ class UserLogoutRefresh(Resource):
 
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
-    def post(self):
+    def get(self):
         current_user_identity = get_jwt_identity()
         access_token = create_access_token(identity=current_user_identity)
         return {"access_token": access_token}
