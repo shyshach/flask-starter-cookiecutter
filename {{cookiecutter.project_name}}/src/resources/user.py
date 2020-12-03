@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import (
     create_access_token,
@@ -21,6 +21,8 @@ class User(Resource):
     def put(self, username: str):
         request_json = request.get_json(silent=True)
         avatar_url: str = request_json.get('avatar_url', '')
+        if avatar_url == '':
+            return {"message": "New avatar url is empty"}, 400
         user = UserRepository.update_avatar(username, avatar_url)
         return user, 200
 
@@ -38,7 +40,7 @@ class PasswordChange(Resource):
         new_password: str = request_json.get('new_password')
         confirm_password: str = request_json.get('confirmation_password')
         current_user = UserRepository.get(username)
-        if not UserRepository.verify_hash(old_password, current_user["password"]):
+        if not UserRepository.verify_hash(old_password, current_user.get("password")):
             return {
                 "message": "Bad old password"
             }, 400
@@ -61,14 +63,12 @@ class UserList(Resource):
         username: str = request_json.get('username')
         avatar_url: str = request_json.get('avatar_url', '')
         password: str = request_json.get('password')
-        active = True
         try:
             user = UserRepository.create(username, avatar_url, password)
             return user, 200
         except Exception as e:
-            response = jsonify(e.to_dict())
-            response.status_code = e.status_code
-            return response
+            response = {"message": str(e)}, 400
+        return response
 
     def get(self):
         """ Get users list."""
@@ -100,11 +100,11 @@ class UserLogin(Resource):
         else:
             return {"message": "User {} doesn't exist".format(username)}, 404
 
-        if UserRepository.verify_hash(password, current_user["password"]):
+        if UserRepository.verify_hash(password, current_user.get("password")):
             access_token = create_access_token(identity=username)
             refresh_token = create_refresh_token(identity=username)
             return {
-                "message": "Logged in as {}".format(current_user["username"]),
+                "message": "Logged in as {}".format(current_user.get("username")),
                 "access_token": access_token,
                 "refresh_token": refresh_token,
             }, 200

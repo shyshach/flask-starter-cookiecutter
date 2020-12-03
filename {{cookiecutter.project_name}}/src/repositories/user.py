@@ -35,11 +35,12 @@ class UserRepository:
         """ Update user """
         result: dict = {}
         try:
-            user = User.query.filter_by(username=username).first()
+            user = User.query.filter_by(username=username).first_or_404()
             if user:
                 user.avatar_url = avatar_url
                 user.save()
                 result = {
+                    "message": "User updated successfully",
                     "username": user.username,
                     "avatar_url": user.avatar_url,
                     "date_created": str(user.date_created)
@@ -56,7 +57,7 @@ class UserRepository:
 
     @staticmethod
     def delete(username: str) -> dict:
-        """ Update user """
+        """ Delete user """
         result: dict = {}
         try:
             user = User.query.filter_by(username=username).first()
@@ -80,7 +81,7 @@ class UserRepository:
 
     @staticmethod
     def update_password(username: str, password: str) -> dict:
-        """ Update user """
+        """ Update user password """
         result: dict = {}
         try:
             user = User.query.filter_by(username=username).first()
