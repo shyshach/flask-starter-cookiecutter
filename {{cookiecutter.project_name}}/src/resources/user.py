@@ -1,5 +1,4 @@
 from flask import request
-import  datetime
 from flask_restful import Resource
 from exceptions import ResourceExists
 from flask_jwt_extended import (
@@ -123,7 +122,7 @@ class UserLogin(Resource):
 
         if UserRepository.verify_hash(password, current_user.get("password")):
             access_token = create_access_token(identity=username)
-            refresh_token = create_refresh_token(identity=username, expires_delta=datetime.timedelta(seconds=1))
+            refresh_token = create_refresh_token(identity=username)
             return {
                 "message": "Logged in as {}".format(current_user.get("username")),
                 "access_token": access_token,
