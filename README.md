@@ -3,7 +3,7 @@
 ## Requirements
 - Docker & Docker-compose
 - Python3, cookiecutter
-- Fabric3 (optional)
+- Fabric3
 
 
 ## Use cookiecutter to make a new project from this template
