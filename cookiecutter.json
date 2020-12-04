@@ -13,6 +13,11 @@
   "_copy_without_render": [
         "*.html",
         "*templates",
-        "*static"
-    ]
+        "*.css",
+        "*.js",
+        "*.html",
+        "*.png",
+        "*.map"
+  ]
 }
+  
