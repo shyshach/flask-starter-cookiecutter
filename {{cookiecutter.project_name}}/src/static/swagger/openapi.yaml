@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: Flask starter API Docs
+  title: {{ cookiecutter.project_name }} API Docs
   version: v1
 servers:
-  - url: 'http://0.0.0.0:5050/'
+  - url: 'http://{{ cookiecutter.flask_host }}:{{ cookiecutter.flask_port }}/'
 tags:
   - name: Health check
   - name: Auth
@@ -62,6 +62,7 @@ paths:
                 username: "htmlprogrammer"
                 avatar_url: "http://myphoto.com"
                 date_created: "2020-12-03 12:47:36.147214"
+                message: "User htmlprogrammer was created"
 
         "400":
           description: User already exists
@@ -348,16 +349,20 @@ paths:
           content:
             application/json:
               example:
-                "username": htmlprogrammer
-                "date_created": 2020-12-03_12:47:36.147214
-                "avatar_url": http://myphoto2.com
-                "active": true
+                username: htmlprogrammer,
+                message: Password updated successfully
         '400':
           description:  Bad request
           content:
             application/json:
               example:
                 "message": New password doesn't match with confirmation password.
+        '422':
+          description: Bad token header
+          content:
+            application/json:
+              example:
+                "msg": "Not enough segments"
 
         '401':
           description:  Unauthorized
@@ -445,4 +450,3 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-
