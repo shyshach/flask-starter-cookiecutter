@@ -1,8 +1,10 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from config import get_config
 from flask_jwt_extended import JWTManager
-import os
+from flask_cors import CORS
 
 
 db = SQLAlchemy()
@@ -29,4 +31,5 @@ def create_app(env=None):
     app.config.from_object(get_config(env))
     db.init_app(app)
     setup_jwt(app)
+    CORS(app)
     return app
