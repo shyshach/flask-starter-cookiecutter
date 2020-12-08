@@ -15,10 +15,12 @@ from sqlalchemy.exc import IntegrityError
 
 
 class User(Resource):
+    @jwt_required
     def get(self, username: str):
         user = UserRepository.get(username)
         return user, 200
 
+    @jwt_required
     def put(self, username: str):
         request_json = request.get_json(silent=True)
         if not request_json:
@@ -29,6 +31,7 @@ class User(Resource):
         user = UserRepository.update_avatar(username, avatar_url)
         return user, 200
 
+    @jwt_required
     def delete(self, username: str):
         try:
             response = UserRepository.delete(username)
@@ -93,6 +96,7 @@ class UserList(Resource):
             response = {"message": str(ex)}, 500
         return response
 
+    @jwt_required
     def get(self):
         """ Get users list."""
         users_query = UserRepository.all()
@@ -126,6 +130,10 @@ class UserLogin(Resource):
             current_user = UserRepository.get(username)
         else:
             err_msg = f"User {username} doesn't exist"
+            return {"message": err_msg}, 404
+
+        if not current_user.get("active"):
+            err_msg = "User was deleted. Please contact the admin."
             return {"message": err_msg}, 404
 
         if UserRepository.verify_hash(password, current_user.get("password")):

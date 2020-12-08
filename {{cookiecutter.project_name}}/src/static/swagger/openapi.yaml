@@ -93,7 +93,8 @@ paths:
                 "active": False
                 }
                 ]
-
+      security:
+        - bearerAuth: [ ]
 
   /api/login:
     post:
@@ -201,6 +202,7 @@ paths:
                 "username": htmlprogrammer
                 "date_created": 2020-12-03_12:47:36.147214
                 "avatar_url": http://myphoto.com
+                "password": somepassword
                 "active": true
         '404':
           description:  User is not in the database
@@ -208,6 +210,8 @@ paths:
             application/json:
               example:
                 "message": The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+      security:
+        - bearerAuth: [ ]
     put:
       tags:
         - User
@@ -266,7 +270,8 @@ paths:
             application/json:
               example:
                 "message": The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
-
+      security:
+        - bearerAuth: [ ]
     delete:
       tags:
         - User
@@ -301,6 +306,9 @@ paths:
             application/json:
               example:
                 "message": User not found
+      security:
+        - bearerAuth: [ ]
+
   /api/change_password:
     put:
       tags:
@@ -443,9 +451,6 @@ paths:
 
 components:
   securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
     bearerAuth:
       type: http
       scheme: bearer
