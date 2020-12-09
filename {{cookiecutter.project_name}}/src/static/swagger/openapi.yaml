@@ -93,6 +93,20 @@ paths:
                 "active": False
                 }
                 ]
+        '422':
+          description: Bad token header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_422'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_401'
+
       security:
         - bearerAuth: [ ]
 
@@ -164,19 +178,20 @@ paths:
               example:
                 access_token: some.long.string
 
-        '401':
-          description: Authorization header is missing.
-          content:
-            application/json:
-              example:
-                msg: "Missing Authorization Header"
-
         '422':
-          description: Broken refresh token.
+          description: Bad token header
           content:
             application/json:
-              example:
-                msg: "Not enough segments"
+              schema:
+                $ref: '#/components/schemas/response_422'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_401'
+
       security:
         - bearerAuth: []
 
@@ -210,6 +225,20 @@ paths:
             application/json:
               example:
                 "message": The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+        '422':
+          description: Bad token header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_422'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_401'
+
       security:
         - bearerAuth: [ ]
     put:
@@ -270,8 +299,24 @@ paths:
             application/json:
               example:
                 "message": The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+        '422':
+          description: Bad token header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_422'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_401'
+
       security:
         - bearerAuth: [ ]
+
+
     delete:
       tags:
         - User
@@ -306,6 +351,19 @@ paths:
             application/json:
               example:
                 "message": User not found
+        '422':
+          description: Bad token header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_422'
+
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response_401'
       security:
         - bearerAuth: [ ]
 
@@ -369,15 +427,15 @@ paths:
           description: Bad token header
           content:
             application/json:
-              example:
-                "msg": "Not enough segments"
+              schema:
+                $ref: '#/components/schemas/response_422'
 
         '401':
           description:  Unauthorized
           content:
             application/json:
-              example:
-                "msg": "Missing Authorization Header"
+              schema:
+                $ref: '#/components/schemas/response_401'
       security:
         - bearerAuth: []
   /api/logout_access:
@@ -450,6 +508,23 @@ paths:
         - bearerAuth: []
 
 components:
+  schemas:
+    'response_401':
+      type: object
+      properties:
+        msg:
+          type: string
+          example:
+            "Missing Authorization Header"
+    'response_422':
+      type: object
+      properties:
+        msg:
+          type: string
+          example:
+            "Not enough segments"
+
+
   securitySchemes:
     bearerAuth:
       type: http
