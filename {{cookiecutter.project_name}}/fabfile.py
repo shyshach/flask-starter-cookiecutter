@@ -27,7 +27,7 @@ def start(stage="dev"):
     if stage == "dev":
         local(f"{DC} up")
     else:
-        local(f"{DC_STAGE} up")
+        local(f"{DC_STAGE} up -d")
 
 
 @task
