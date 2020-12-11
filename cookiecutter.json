@@ -1,7 +1,7 @@
 {
   "project_name": "test_project",
   "flask_host": "0.0.0.0",
-  "flask_port": "5050",
+  "flask_port": "80",
   "adminer_host": "127.0.0.1",
   "adminer_port": "8080",
   "db_url": "db:5432",
