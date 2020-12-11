@@ -1,3 +1,5 @@
+import os
+
 from flask import render_template
 from flask_migrate import Migrate
 from flask_restful import Api
@@ -37,6 +39,12 @@ api.add_resource(TokenRefresh, "/api/refresh")
 def openapi():
     """Return Swagger UI for custom openapi.yaml in static/openapi.yaml."""
     return render_template('swagger.html')
+
+
+@app.before_first_request
+def before_first_request():
+    app.logger.info("Checking server`s IP address")
+    result = os.popen("curl http://checkip.amazonaws.com").read()
 
 
 # CLI for migrations

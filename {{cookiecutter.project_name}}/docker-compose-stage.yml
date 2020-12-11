@@ -11,10 +11,8 @@ services:
     networks:
       - local
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command:  flask run -h {{ cookiecutter.flask_host }} -p {{ cookiecutter.flask_port }}
+    build: .
+    command: gunicorn --bind 0.0.0.0:8080 --chdir /app/src main:app --workers 2 --max-requests 10000
     restart: on-failure
     env_file:
       - ./.env
@@ -23,15 +21,6 @@ services:
       - ./scripts:/app/scripts
     ports:
       - "{{cookiecutter.flask_host}}:{{ cookiecutter.flask_port }}:{{ cookiecutter.flask_port }}"
-    depends_on: 
-      - db
-    networks:
-      - local
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "{{cookiecutter.adminer_host}}:{{ cookiecutter.adminer_port }}:{{ cookiecutter.adminer_port }}"
     depends_on:
       - db
     networks:
