@@ -9,30 +9,43 @@ Install fabric3 from console:
 from fabric.api import local, task
 
 DC = "docker-compose -f docker-compose.yml"
+DC_STAGE = "docker-compose -f docker-compose-stage.yml"
 
 
 @task
-def build():
+def build(stage="dev"):
     """Run docker-compose build command."""
-    local(f"{DC} build")
+    if stage == "dev":
+        local(f"{DC} build")
+    else:
+        local(f"{DC_STAGE} build")
 
 
 @task
-def start():
+def start(stage="dev"):
     """Run docker-compose."""
-    local(f"{DC} up")
+    if stage == "dev":
+        local(f"{DC} up")
+    else:
+        local(f"{DC_STAGE} up")
 
 
 @task
-def stop():
+def stop(stage="dev"):
     """Stop docker-compose."""
-    local(f"{DC} down")
+    if stage == "dev":
+        local(f"{DC} down")
+    else:
+        local(f"{DC_STAGE} down")
 
 
 @task
-def logs():
+def logs(stage="dev"):
     """Log docker-compose."""
-    local(f"{DC} logs")
+    if stage == "dev":
+        local(f"{DC} logs")
+    else:
+        local(f"{DC_STAGE} logs")
 
 
 @task
