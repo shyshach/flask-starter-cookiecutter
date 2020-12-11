@@ -49,3 +49,10 @@ def migrate():
     local(
         f"{DC} exec app /bin/bash ./scripts/migrate.sh"
     )
+
+@task
+def build_stage():
+    """deploy to prod"""
+    local(
+        f"docker-compose -f docker-compose-stage.yml up"
+    )
