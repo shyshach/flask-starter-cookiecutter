@@ -12,7 +12,7 @@ services:
       - local
   app:
     build: .
-    command: gunicorn --bind 0.0.0.0:80 app:app --worker-class gevent --workers 8 --max-requests 10000
+    command: gunicorn --bind 0.0.0.0:8080 --chdir /app/src main:app --workers 2 --max-requests 10000
     restart: on-failure
     env_file:
       - ./.env
