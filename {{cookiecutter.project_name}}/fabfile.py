@@ -13,59 +13,55 @@ DC_STAGE = "docker-compose -f docker-compose-stage.yml"
 
 
 @task
-def build(stage="dev"):
+def build(stage="development"):
     """Run docker-compose build command."""
-    if stage == "dev":
+    if stage == "development":
         local(f"{DC} build")
     else:
         local(f"{DC_STAGE} build")
 
 
 @task
-def start(stage="dev"):
+def start(stage="development"):
     """Run docker-compose."""
-    if stage == "dev":
+    if stage == "development":
         local(f"{DC} up")
     else:
         local(f"{DC_STAGE} up -d")
 
 
 @task
-def stop(stage="dev"):
+def stop(stage="development"):
     """Stop docker-compose."""
-    if stage == "dev":
+    if stage == "development":
         local(f"{DC} down")
     else:
         local(f"{DC_STAGE} down")
 
 
 @task
-def logs(stage="dev"):
+def logs(stage="development"):
     """Log docker-compose."""
-    if stage == "dev":
+    if stage == "development":
         local(f"{DC} logs")
     else:
         local(f"{DC_STAGE} logs")
 
 
 @task
-def init_db():
+def init_db(stage="development"):
     """Db initialiation."""
-    local(
-        f"{DC} exec app /bin/bash ./scripts/db_init.sh"
-    )
+    if stage == "development":
+        local(f"{DC} exec app /bin/bash ./scripts/db_init.sh")
+    else:
+        local(f"{DC_STAGE} exec app /bin/bash ./scripts/db_init.sh")
 
 
-@task
-def migrate():
-    """Db migration."""
-    local(
-        f"{DC} exec app /bin/bash ./scripts/migrate.sh"
-    )
+# init_db could be split into 2 commands init_db and migrate
+# @task
+# def migrate():
+#     """Db migration."""
+#     local(
+#         f"{DC} exec app /bin/bash ./scripts/migrate.sh"
+#     )
 
-@task
-def build_stage():
-    """deploy to prod"""
-    local(
-        f"docker-compose -f docker-compose-stage.yml up"
-    )

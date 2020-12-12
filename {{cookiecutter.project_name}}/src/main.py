@@ -1,4 +1,5 @@
 import os
+import yaml
 
 from flask import render_template
 from flask_migrate import Migrate
@@ -43,8 +44,16 @@ def openapi():
 
 @app.before_first_request
 def before_first_request():
-    app.logger.info("Checking server`s IP address")
-    result = os.popen("curl http://checkip.amazonaws.com").read()
+    if os.getenv("ENV") != "development":
+        app.logger.info("Checking server`s IP address")
+        ip = os.popen("curl http://checkip.amazonaws.com").read().strip()
+        with open("static/swagger/openapi.yaml", "r+") as f:
+            file = yaml.load(f)
+            print(file["servers"][0]["url"])
+            file["servers"][0]["url"] = file["servers"][0]["url"].replace("0.0.0.0", f"{ip}")
+        with open('static/swagger/openapi.yaml', 'w') as f:
+            yaml.dump(file, f, default_flow_style=False)
+
 
 
 # CLI for migrations
