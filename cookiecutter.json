@@ -8,7 +8,7 @@
   "db_name": "mydb",
   "db_username": "flask_user",
   "db_password": "123456789",
-  "ENV": "development",
+  "ENV": "staging",
   "jwt_key": "jwt-secret-key",
   "_copy_without_render": [
         "*.html",
