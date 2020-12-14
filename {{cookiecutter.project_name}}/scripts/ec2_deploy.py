@@ -13,7 +13,7 @@ def generate_pem(ec2_resource, key_file_name):
 
 ec2_client = boto3.client('ec2')
 ec2_resource = boto3.resource("ec2")
-#pem = generate_pem(ec2_resource, "boto_key3")
+pem = generate_pem(ec2_resource, "boto_key3")
 user_data = '''#!/bin/bash
 yum -y update
 yum install -y python3
