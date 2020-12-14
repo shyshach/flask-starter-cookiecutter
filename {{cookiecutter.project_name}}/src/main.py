@@ -53,7 +53,7 @@ def before_first_request():
             file["servers"][0]["url"] = file["servers"][0]["url"].replace("0.0.0.0", f"{ip}")
         with open('static/swagger/openapi.yaml', 'w') as f:
             yaml.dump(file, f, default_flow_style=False)
-    os.system("fab init_db")
+    os.system("fab init_db:ec2")
     print("db initialization")
 
 
