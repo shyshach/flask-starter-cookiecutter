@@ -13,6 +13,7 @@ def generate_pem(ec2_resource, key_file_name):
 
 ec2_client = boto3.client('ec2')
 ec2_resource = boto3.resource("ec2")
+
 pem = generate_pem(ec2_resource, "boto_keys")
 user_data = '''#!/bin/bash
 yum -y update
@@ -32,7 +33,6 @@ cd ec2-user
 cookiecutter https://github.com/shyshach/flask-starter-cookiecutter.git --no-input
 cd test_project
 fab start:staging
-fab init_db:staging
 '''
 instances = ec2_resource.create_instances(
     DryRun=False,

@@ -53,6 +53,8 @@ def init_db(stage="development"):
     """Db initialiation."""
     if stage == "development":
         local(f"{DC} exec app /bin/bash ./scripts/db_init.sh")
+    elif stage == "ec2":
+        local(f"docker-compose -f ../docker-compose-stage.yml exec app /bin/bash ../scripts/db_init.sh ")
     else:
         local(f"{DC_STAGE} exec app /bin/bash ./scripts/db_init.sh")
 
