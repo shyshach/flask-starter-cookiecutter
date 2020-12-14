@@ -32,7 +32,6 @@ cd ec2-user
 cookiecutter https://github.com/shyshach/flask-starter-cookiecutter.git --no-input
 cd test_project
 fab start:staging
-fab init_db:staging
 '''
 instances = ec2_resource.create_instances(
     DryRun=False,
