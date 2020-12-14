@@ -66,3 +66,4 @@ def init_db(stage="development"):
 #     local(
 #         f"{DC} exec app /bin/bash ./scripts/migrate.sh"
 #     )
+

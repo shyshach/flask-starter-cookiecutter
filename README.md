@@ -15,19 +15,31 @@ cookiecutter https://github.com/shyshach/flask-starter-cookiecutter
 
 
 ## Run locally with docker
+Build default app in development environment
+Use fabric3
+```
+fab build
+fab start
+```
+You can specify stage
+```
+fab build:staging
+fab start:staging
+```
 
-Use docker-compose
+Or use docker-compose (development)
 ```
 docker-compose build
 docker-compose up
 ```
 
-## Run migrations
 
+## Run migrations
+Replace "staging" with your stagename. If not specified stage is development
 ```
-fab init_db
-fab migrate
+fab init_db:staging
 ```
+
 ## About .env files
 On first run .env.example will be replaced by .env with user-provided data.  
 After that .env won't be pushed to GitHub, but .env.sample will
