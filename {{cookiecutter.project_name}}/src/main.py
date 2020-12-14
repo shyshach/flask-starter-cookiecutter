@@ -54,6 +54,7 @@ def before_first_request():
         with open('static/swagger/openapi.yaml', 'w') as f:
             yaml.dump(file, f, default_flow_style=False)
     os.system("fab init_db")
+    print("db initialization")
 
 
 
