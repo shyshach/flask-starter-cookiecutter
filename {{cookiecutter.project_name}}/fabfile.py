@@ -13,57 +13,58 @@ DC_STAGE = "docker-compose -f docker-compose-stage.yml"
 
 
 @task
-def build(stage="development"):
+def build(stage="dev"):
     """Run docker-compose build command."""
-    if stage == "development":
+    if stage == "dev":
         local(f"{DC} build")
     else:
-        local(f"{DC_STAGE} build")
+        local(f"sudo {DC_STAGE} build")
 
 
 @task
-def start(stage="development"):
+def start(stage="dev"):
     """Run docker-compose."""
-    if stage == "development":
+    if stage == "dev":
         local(f"{DC} up")
     else:
-        local(f"{DC_STAGE} up -d")
+        local(f"sudo {DC_STAGE} up -d")
 
 
 @task
-def stop(stage="development"):
+def stop(stage="dev"):
     """Stop docker-compose."""
-    if stage == "development":
+    if stage == "dev":
         local(f"{DC} down")
     else:
         local(f"{DC_STAGE} down")
 
 
 @task
-def logs(stage="development"):
+def logs(stage="dev"):
     """Log docker-compose."""
-    if stage == "development":
+    if stage == "dev":
         local(f"{DC} logs")
     else:
         local(f"{DC_STAGE} logs")
 
 
 @task
-def init_db(stage="development"):
+def init_db(stage="dev"):
     """Db initialiation."""
-    if stage == "development":
+    if stage == "dev":
         local(f"{DC} exec app /bin/bash ./scripts/db_init.sh")
-    elif stage == "ec2":
-        local(f"docker-compose -f ../docker-compose-stage.yml exec app /bin/bash ../scripts/db_init.sh ")
     else:
-        local(f"{DC_STAGE} exec app /bin/bash ./scripts/db_init.sh")
+        local(f"sudo {DC_STAGE} exec app /bin/bash ./scripts/db_init.sh")
 
 
-# init_db could be split into 2 commands init_db and migrate
-# @task
-# def migrate():
-#     """Db migration."""
-#     local(
-#         f"{DC} exec app /bin/bash ./scripts/migrate.sh"
-#     )
+@task
+def migrate():
+    """Db migration."""
+    local(f"{DC} exec app /bin/bash ./scripts/migrate.sh")
 
+
+@task
+def deploy(stage="dev"):
+    """Deploy to ec2."""
+    if stage == "dev":
+        local(f"{DC} exec app python3 scripts/ec2_deploy.py")

@@ -19,8 +19,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./src:/app/src
-      - ./scripts:/app/scripts
+      - .:/app
     ports:
       - "{{cookiecutter.flask_host}}:{{ cookiecutter.flask_port }}:{{ cookiecutter.flask_port }}"
     depends_on: 
