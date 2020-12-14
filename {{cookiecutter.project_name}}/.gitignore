@@ -6,6 +6,7 @@ venv
 .idea/dictionaries
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
+.vscode
 
 *.iws
 *.env
@@ -16,3 +17,7 @@ venv
 __pycache__
 *.pao
 *.pyc
+
+*.pem
+server_info.txt
+deploy.ini

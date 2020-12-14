@@ -3,12 +3,7 @@ FROM python:3.9
 RUN mkdir -p /app
 WORKDIR /app
 
-# Copy files
-COPY ./requirements.txt ./
-COPY ./setup.py ./
-
-# Copy folders
-ADD ./src ./src
+ADD . .
 
 # Install packages
 RUN pip install -U pip && pip install -r requirements.txt

@@ -1,4 +1,5 @@
 import os
+import subprocess
 import yaml
 
 from flask import render_template
@@ -44,18 +45,26 @@ def openapi():
 
 @app.before_first_request
 def before_first_request():
-    if os.getenv("ENV") != "development":
-        app.logger.info("Checking server`s IP address")
+    if os.getenv("ENV") != "dev":
         ip = os.popen("curl http://checkip.amazonaws.com").read().strip()
-        with open("static/swagger/openapi.yaml", "r+") as f:
-            file = yaml.load(f)
-            print(file["servers"][0]["url"])
+        app.logger.info(f"Checking server`s IP address {ip}")
+        open_api_yaml = "/app/src/static/swagger/openapi.yaml"
+        with open(open_api_yaml, "r+") as f:
+            file = yaml.load(f, Loader=yaml.FullLoader)
             file["servers"][0]["url"] = file["servers"][0]["url"].replace("0.0.0.0", f"{ip}")
-        with open('static/swagger/openapi.yaml', 'w') as f:
+        with open(open_api_yaml, "w") as f:
             yaml.dump(file, f, default_flow_style=False)
-    os.system("../scripts/db_init.sh")
-    print("db initialization")
 
+        app.logger.info("Run DB migrations")
+        p = subprocess.Popen(
+            "/app/scripts/db_init.sh",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            stdin=subprocess.PIPE
+        )
+        out, err = p.communicate()
+        app.logger.info(f"OUT: {out}")
+        app.logger.info(f"Err: {err}")
 
 
 # CLI for migrations

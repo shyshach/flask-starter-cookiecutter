@@ -17,8 +17,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./src:/app/src
-      - ./scripts:/app/scripts
+      - .:/app
     ports:
       - "0.0.0.0:80:80"
     depends_on:
