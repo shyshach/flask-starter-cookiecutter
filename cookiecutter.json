@@ -10,6 +10,7 @@
   "db_password": "123456789",
   "ENV": "staging",
   "jwt_key": "jwt-secret-key",
+  "aws-default-region": ["eu-central-1", "us-east-1"],
   "_copy_without_render": [
         "*.html",
         "*templates",

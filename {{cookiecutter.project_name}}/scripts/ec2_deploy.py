@@ -106,8 +106,9 @@ def generate_initial_commands(repo_name):
 
 
 def main(repo_name=None):
+    deploy_region = os.getenv("AWS_DEFAULT_REGION", "eu-central-1")
     my_config = Config(
-        region_name=os.getenv("AWS_DEFAULT_REGION", "eu-central-1"),
+        region_name=deploy_region,
         signature_version='v4',
         retries={
             'max_attempts': 10,
@@ -124,7 +125,11 @@ def main(repo_name=None):
     ec2_resource = boto3.resource("ec2")
     key_name = generate_key_name()
     pem = generate_pem(ec2_resource, key_name)
-    image_id = "ami-0bd39c806c2335b95"
+    image_by_region = {
+        "eu-central-1": "ami-0bd39c806c2335b95",
+        "us-east-1": "ami-04d29b6f966df1537"
+    }
+    image_id = image_by_region.get(deploy_region)
     if pem and repo_name:
         commands = generate_initial_commands(repo_name=repo_name)
         instances = ec2_resource.create_instances(
