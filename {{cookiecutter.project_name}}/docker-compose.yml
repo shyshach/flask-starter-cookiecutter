@@ -11,11 +11,13 @@ services:
     networks:
       - local
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     command:  flask run -h {{ cookiecutter.flask_host }} -p {{ cookiecutter.flask_port }}
     restart: on-failure
+    environment:
+      - FLASK_APP=src/main.py
+      - FLASK_DEBUG=1
+      - FLASK_ENV=docker
     env_file:
       - ./.env
     volumes:
