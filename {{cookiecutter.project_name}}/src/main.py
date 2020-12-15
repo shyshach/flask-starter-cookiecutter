@@ -56,6 +56,7 @@ def before_first_request():
             yaml.dump(file, f, default_flow_style=False)
 
         app.logger.info("Run DB migrations")
+        subprocess.run(["chmod", "a+rwx", "/app/scripts/db_init.sh"])
         p = subprocess.Popen(
             "/app/scripts/db_init.sh",
             stdout=subprocess.PIPE,

@@ -11,7 +11,9 @@ services:
     networks:
       - local
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile-stage
     command: gunicorn --bind 0.0.0.0:80 --chdir /app/src main:app --workers 2 --max-requests 10000
     restart: on-failure
     env_file:
