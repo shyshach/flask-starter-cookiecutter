@@ -10,6 +10,8 @@
 [Cookiecutter docs](https://cookiecutter.readthedocs.io/en/latest/)
 ```
 pip install --user cookiecutter
+# for using fabric3 commands from fabfile install it first
+# example command for fabric3 installation: pip install fabric3
 cookiecutter https://github.com/shyshach/flask-starter-cookiecutter.git
 ```
 
